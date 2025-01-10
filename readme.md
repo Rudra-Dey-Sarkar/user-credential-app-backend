@@ -152,9 +152,5 @@ Start the server:-
 npm start
 ```
 
-## Deployment
-
-The project is configured for deployment on Vercel. Make sure `vercel.json` is correctly set up for your environment.
-
 This backend is part of a larger system for managing user credentials securely and efficiently.
 
