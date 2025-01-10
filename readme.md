@@ -125,6 +125,7 @@ Rudra-Dey-Sarkar-user-credential-app-backend/
 Create a `.env` file in the root directory with the following variables:-
 
 ```
+DB=<database_connection_url>
 PORT=<port_number>
 EMAIL=<email_address>
 PW=<email_pasword>
