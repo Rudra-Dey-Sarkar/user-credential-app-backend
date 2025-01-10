@@ -12,6 +12,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 const nodemailer = require('nodemailer');
 
+
 const ConnectDB = require("./src/config/db");
 ConnectDB();
 
