@@ -141,7 +141,7 @@ app.post("/forget-otp", async (req, res) => {
         console.log(err);
     }
 });
-//Forget OTP
+//Forget
 app.put("/forget", async (req, res) => {
     const { otp, username, email, password } = req.body;
     console.log(otp, username, email, password);
