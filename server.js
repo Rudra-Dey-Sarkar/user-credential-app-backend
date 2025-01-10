@@ -1,30 +1,41 @@
+// Load environment variables from .env file
 require("dotenv").config();
+
+// Import required libraries
 const express = require("express");
 const cors = require("cors");
+const nodemailer = require("nodemailer");
+
+// Initialize express app
 const app = express();
-const userSchemaModels = require("./src/models/user");
+
+// Import custom modules
+const userSchemaModels = require("./src/models/user"); // User schema model for database interaction
+const ConnectDB = require("./src/config/db"); // Database connection module
+
+// Define CORS options to allow cross-origin requests
 const corsOptions = {
     origin: '*',
     optionsSuccessStatus: 200
+};
 
-}
-app.use(cors(corsOptions));
-app.use(express.json());
-const nodemailer = require('nodemailer');
+// Middleware configuration
+app.use(cors(corsOptions)); // Use CORS middleware with specified options
+app.use(express.json()); // Parse JSON payloads
 
-
-const ConnectDB = require("./src/config/db");
+// Establish database connection
 ConnectDB();
 
-
-//Notification Send
+// Configure nodemailer transporter for sending notifications
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PW,
+        user: process.env.EMAIL, // Sender's email from environment variables
+        pass: process.env.PW,    // Sender's password from environment variables
     },
 });
+
+// Function to send email notifications
 const sendNotification = (email, message) => {
     transporter.sendMail({
         from: process.env.EMAIL,
@@ -34,7 +45,7 @@ const sendNotification = (email, message) => {
     });
 };
 
-//test route
+// Test route to check if the server is working
 app.get("/", async (req, res) => {
     try {
         res.json("Working");
@@ -43,18 +54,19 @@ app.get("/", async (req, res) => {
     }
 });
 
-//Register
+// Route to register a new user
 app.post("/register", async (req, res) => {
     const { username, email, password } = req.body;
     const datas = {
         username: username,
         email: email,
         password: password
-    }
+    };
 
     try {
         const response1 = await userSchemaModels.find({ username: username });
         const response2 = await userSchemaModels.find({ email: email });
+
         if (response1?.length > 0 && response2?.length > 0) {
             res.status(404).json("Username and Email Already Exist");
         } else if (response1?.length > 0) {
@@ -68,14 +80,14 @@ app.post("/register", async (req, res) => {
                 })
                 .catch((err) => {
                     res.status(404).json(err);
-                })
+                });
         }
     } catch (err) {
         console.log(err);
     }
-
 });
-//Login
+
+// Route to log in a user
 app.post("/login", async (req, res) => {
     const { username, email, password } = req.body;
     try {
@@ -90,7 +102,7 @@ app.post("/login", async (req, res) => {
                 })
                 .catch((err) => {
                     res.status(404).json(err);
-                })
+                });
         } else if (email !== undefined) {
             await userSchemaModels.find({ email: email })
                 .then((data) => {
@@ -102,7 +114,7 @@ app.post("/login", async (req, res) => {
                 })
                 .catch((err) => {
                     res.status(404).json(err);
-                })
+                });
         } else {
             res.status(404).json("please enter email or password");
         }
@@ -110,48 +122,44 @@ app.post("/login", async (req, res) => {
         console.log(err);
     }
 });
-//Forget OTP
+
+// Route to send OTP for password recovery
 app.post("/forget-otp", async (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, email } = req.body;
     try {
         if (username !== undefined) {
             await userSchemaModels.find({ username: username })
                 .then((data) => {
                     sendNotification(data[0]?.email, `OTP :- 123`);
-                    res.status(200).json("OTP sended in the email");
+                    res.status(200).json("OTP sent to the email");
                 })
                 .catch((err) => {
                     res.status(404).json(err);
-                })
+                });
         } else if (email !== undefined) {
             await userSchemaModels.find({ email: email })
                 .then((data) => {
-                    if (data[0].password === password) {
-                        res.status(200).json(data);
-                    } else {
-                        res.status(404).json("Use Same Password");
-                    }
+                    sendNotification(email, `OTP :- 123`);
+                    res.status(200).json("OTP sent to the email");
                 })
                 .catch((err) => {
                     res.status(404).json(err);
-                })
+                });
         } else {
-            res.status(404).json("please enter email or password");
+            res.status(404).json("Please enter username or email");
         }
     } catch (err) {
         console.log(err);
     }
 });
-//Forget
+
+// Route to update password after verifying OTP
 app.put("/forget", async (req, res) => {
     const { otp, username, email, password } = req.body;
-    console.log(otp, username, email, password);
     try {
         if (username !== undefined) {
-            console.log("Username");
-            if (otp !== undefined && otp === "123") {
-                await userSchemaModels
-                    .findOneAndUpdate({ username: username }, { password: password }, { new: true })
+            if (otp === "123") {
+                await userSchemaModels.findOneAndUpdate({ username: username }, { password: password }, { new: true })
                     .then((data) => {
                         if (data) {
                             res.status(200).json({ message: "Password updated successfully", data });
@@ -166,10 +174,8 @@ app.put("/forget", async (req, res) => {
                 res.status(400).json({ message: "Enter correct OTP" });
             }
         } else if (email !== undefined) {
-            console.log("Email");
-            if (otp !== undefined && otp === "123") {
-                await userSchemaModels
-                    .findOneAndUpdate({ email: email }, { password: password }, { new: true })
+            if (otp === "123") {
+                await userSchemaModels.findOneAndUpdate({ email: email }, { password: password }, { new: true })
                     .then((data) => {
                         if (data) {
                             res.status(200).json({ message: "Password updated successfully", data });
@@ -192,7 +198,7 @@ app.put("/forget", async (req, res) => {
     }
 });
 
-
+// Start the server and listen on the specified port
 app.listen(process.env.PORT, () => {
-    console.log("App is listening in port", process.env.PORT);
-})
+    console.log("App is listening on port", process.env.PORT);
+});
