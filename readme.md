@@ -1,15 +1,15 @@
-# User Credential App Backend
+# User Credential App Backend
 
 This is the backend for a user credential management system built using Node.js, Express, and MongoDB. It includes user registration, login, password reset using OTP, and email notifications.
 
-### Features
+## Features
 
 - User registration with unique username and email validation.
 - User login with password verification.
 - Password recovery via OTP sent to the user’s email.
 - Password update functionality after OTP verification.
 
-### Directory Structure
+## Directory Structure
 
 ```
 Rudra-Dey-Sarkar-user-credential-app-backend/
@@ -23,25 +23,25 @@ Rudra-Dey-Sarkar-user-credential-app-backend/
         └── user.js       # Mongoose schema for user data
 ```
 
-### Endpoints
+## Endpoints
 
-### Root Endpoint
+### Root Endpoint
 
-### GET /
+**GET /**
 
-### Description:- Test route to ensure the server is running.
+**Description**:- Test route to ensure the server is running.
 
-### Response:-
+**Response**:-
 
-- Status 200:- Returns "Working" message.
+- **Status 200**:- Returns "Working" message.
 
-### User Registration
+### User Registration
 
-### POST /register
+**POST /register**
 
-Description:- Registers a new user if the username and email do not already exist.
+**Description**:- Registers a new user if the username and email do not already exist.
 
-### Request Body:-
+**Request Body**:-
 
 ```json
 {
@@ -51,18 +51,18 @@ Description:- Registers a new user if the username and email do not already exis
 }
 ```
 
-### Response:-
+**Response**:-
 
-- Status 200:- Returns user data on successful registration.
-- Status 404:- Returns error messages if username or email already exists. 
+- **Status 200**:- Returns user data on successful registration.
+- **Status 404**:- Returns error messages if username or email already exists.
 
- ### User Login
+### User Login
 
-### POST /login
+**POST /login**
 
-Description:- Authenticates a user using either username or email and password.
+**Description**:- Authenticates a user using either username or email and password.
 
-### Request Body:-
+**Request Body**:-
 
 ```json
 {
@@ -72,18 +72,18 @@ Description:- Authenticates a user using either username or email and password.
 }
 ```
 
-### Response:-
+**Response**:-
 
-- Status 200:- Returns user data if credentials are valid.
-- Status 404:- Returns an error message for incorrect credentials.
+- **Status 200**:- Returns user data if credentials are valid.
+- **Status 404**:- Returns an error message for incorrect credentials.
 
-### Password Recovery (OTP Request)
+### Password Recovery (OTP Request)
 
-### POST /forget-otp
+**POST /forget-otp**
 
-Description:- Sends a fixed OTP to the user's email for password reset.
+**Description**:- Sends a fixed OTP to the user's email for password reset.
 
-### Request Body:-
+**Request Body**:-
 
 ```json
 {
@@ -92,18 +92,18 @@ Description:- Sends a fixed OTP to the user's email for password reset.
 }
 ```
 
- ### Response:-
+**Response**:-
 
-- Status 200:- Confirms that OTP has been sent to the email.
-- Status 404:- Returns an error if the user is not found.
+- **Status 200**:- Confirms that OTP has been sent to the email.
+- **Status 404**:- Returns an error if the user is not found.
 
-### Password Update After OTP Verification
+### Password Update After OTP Verification
 
-### PUT /forget
+**PUT /forget**
 
-Descriptionon\*\*on\*\*:- Updates the user's password after verifying the OTP.
+**Description**on\*\*on\*\*:- Updates the user's password after verifying the OTP.
 
-### Request Body:-
+**Request Body**:-
 
 ```json
 {
@@ -114,23 +114,23 @@ Descriptionon\*\*on\*\*:- Updates the user's password after verifying the OTP.
 }
 ```
 
-### Response:-
+**Response**:-
 
-- Status 200:- Returns a success message and updated user data.
-- Status 400:- Returns an error for incorrect OTP.
-- Status 404:- Returns an error if the user is not found.
+- **Status 200**:- Returns a success message and updated user data.
+- **Status 400**:- Returns an error for incorrect OTP.
+- **Status 404**:- Returns an error if the user is not found.
 
-## Environment Variables
+## Environment Variables
 
 Create a `.env` file in the root directory with the following variables:-
 
 ```
 PORT=<port_number>
 EMAIL=<email_address>
-PW=<email_password>
+PW=<email_pasword>
 ```
 
-### Dependencies
+###  Dependencies
 
 - `express` - Web framework for Node.js
 - `mongoose` - MongoDB object modeling for Node.js
@@ -138,7 +138,7 @@ PW=<email_password>
 - `dotenv` - Loads environment variables from .env
 - `nodemailer` - For sending email notifications
 
-## Usage
+## Usage
 
 Install dependencies:-
 
@@ -152,7 +152,7 @@ Start the server:-
 npm start
 ```
 
-### Deployment
+## Deployment
 
 The project is configured for deployment on Vercel. Make sure `vercel.json` is correctly set up for your environment.
 
