@@ -2,6 +2,10 @@
 
 This is the backend for a user credential management system built using Node.js, Express, and MongoDB. It includes user registration, login, password reset using OTP, and email notifications.
 
+---------------------------------------------------------------------------
+# Global OTP :- 123
+---------------------------------------------------------------------------
+
 ## Features
 
 - User registration with unique username and email validation.
@@ -82,6 +86,8 @@ Rudra-Dey-Sarkar-user-credential-app-backend/
 **POST /forget-otp**
 
 **Description**:- Sends a fixed OTP to the user's email for password reset.
+
+**Please Note**:- In case you are using deplyed endpoints you might not receive the email due to restrictions in that case there is a global OTP :- 123 that you can directly use and forget your password 
 
 **Request Body**:-
 

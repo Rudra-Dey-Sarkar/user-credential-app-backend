@@ -138,7 +138,7 @@ app.post("/forget-otp", async (req, res) => {
             await userSchemaModels.find({ username: username })
                 .then((data) => {
                     sendNotification(data[0]?.email, `OTP :- 123`);
-                    res.status(200).json("OTP sent to the email");
+                    res.status(200).json("OTP sent to the email but please note that if you are using deplyed endpoints you might not receive the email due to restrictions");
                 })
                 .catch((err) => {
                     res.status(404).json(err);
