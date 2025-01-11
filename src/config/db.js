@@ -9,4 +9,5 @@ await mongoose.connect(process.env.DB).then(()=>{
 })
 }
 
+
 module.exports = ConnectDB;

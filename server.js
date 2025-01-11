@@ -37,11 +37,18 @@ const transporter = nodemailer.createTransport({
 
 // Function to send email notifications
 const sendNotification = (email, message) => {
+    console.log(`Attempting to send email to: ${email}`);
     transporter.sendMail({
         from: process.env.EMAIL,
         to: email,
         subject: 'Appointment Update',
         text: message,
+    }, (error, info) => {
+        if (error) {
+            console.error("Error sending email:", error);
+        } else {
+            console.log("Email sent successfully:", info.response);
+        }
     });
 };
 
